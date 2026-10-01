@@ -22,6 +22,13 @@ Scope {
     // Workspace ids some monitor shows right now (incl. special workspaces), read straight
     // from Hyprland: Quickshell's monitor objects do not always carry their active workspace.
     property var activeWorkspaces: []
+    // Super and a mouse button held: a window is being dragged or resized.
+    property bool dragging: false
+
+    onDraggingChanged: {
+        if (!root.dragging)
+            root.hurry();
+    }
 
     onActiveAddressChanged: {
         if (root.activeAddress === "")
@@ -149,6 +156,35 @@ Scope {
                     root.cursor = Qt.point(x, y);
             }
         }
+    }
+
+    // Hyprland sends no drag event. Its Lua API knows the held keys, and a held mouse button is
+    // in that list with keycode 0. `repl` answers the value; without a Lua config it answers an
+    // error, which reads as not dragging.
+    Socket {
+        id: dragSocket
+
+        path: socket.path
+        onConnectedChanged: {
+            if (!connected)
+                return;
+            write("repl hl.is_key_down(0) and (hl.is_key_down(\"Super_L\") or hl.is_key_down(\"Super_R\"))");
+            flush();
+        }
+        parser: SplitParser {
+            splitMarker: ""
+            onRead: data => {
+                dragSocket.connected = false;
+                root.dragging = data.trim() === "true";
+            }
+        }
+    }
+
+    Timer {
+        interval: 50
+        repeat: true
+        running: root.trackWindows && root.available
+        onTriggered: dragSocket.connected = true
     }
 
     Socket {

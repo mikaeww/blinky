@@ -120,7 +120,7 @@ PanelWindow {
                     root.sessions.chime(session.state === "done" ? "done" : session.state === "error" ? "error" : "attention");
             }
 
-            visible: uncovered && onThisScreen && !moving
+            visible: uncovered && onThisScreen && !moving && !root.windows.dragging
             // The item spans the bubble and the blinky, so the mask covers exactly what can be clicked.
             width: root.blinkySize + (talking ? bubble.width + 8 : 0)
             height: Math.max(root.blinkySize, talking ? bubble.height : 0)
