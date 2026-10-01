@@ -89,6 +89,11 @@ Scope {
         Hyprland.dispatch("hl.dsp.focus({ window = \"address:0x" + address + "\" })");
     }
 
+    // A watched window moved: poll fast until it has stayed put for a while.
+    function hurry() {
+        fastPoll.restart();
+    }
+
     function refresh() {
         Hyprland.refreshToplevels();
         if (!monitorSocket.connected)
@@ -109,7 +114,13 @@ Scope {
     // ponytail: Hyprland sends no event when a window is resized or dragged, so window
     // geometry is also polled; a few requests per second over the socket while blinkies sit on windows.
     Timer {
-        interval: 300
+        id: fastPoll
+
+        interval: 1000
+    }
+
+    Timer {
+        interval: fastPoll.running ? 50 : 300
         repeat: true
         running: root.trackWindows && root.available
         triggeredOnStart: true

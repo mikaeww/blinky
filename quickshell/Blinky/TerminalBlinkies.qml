@@ -89,6 +89,27 @@ PanelWindow {
             property bool peek: false
             readonly property bool talking: news || peek
             readonly property Region hit: Region { item: corner }
+            // Hyprland reports the target geometry while the window is still dragged or animating
+            // there, so the blinky hides until the frame has stopped changing.
+            property rect lastFrame
+            readonly property bool moving: settle.running
+
+            onFrameChanged: {
+                if (frame.x === lastFrame.x && frame.y === lastFrame.y && frame.width === lastFrame.width && frame.height === lastFrame.height)
+                    return;
+                const appeared = lastFrame.width === 0;
+                lastFrame = frame;
+                if (appeared)
+                    return;
+                settle.restart();
+                root.windows.hurry();
+            }
+
+            Timer {
+                id: settle
+
+                interval: 450
+            }
 
             onNewsChanged: {
                 if (!news) {
@@ -99,7 +120,7 @@ PanelWindow {
                     root.sessions.chime(session.state === "done" ? "done" : session.state === "error" ? "error" : "attention");
             }
 
-            visible: uncovered && onThisScreen
+            visible: uncovered && onThisScreen && !moving
             // The item spans the bubble and the blinky, so the mask covers exactly what can be clicked.
             width: root.blinkySize + (talking ? bubble.width + 8 : 0)
             height: Math.max(root.blinkySize, talking ? bubble.height : 0)
