@@ -5,7 +5,7 @@ import Blinky
 
 Window {
     id: win
-    width: row.width + phone.width + 72; height: 200; visible: true; color: "#1b1b1b"
+    width: row.width + 48; height: 150; visible: true; color: "#1b1b1b"
     property var items: [
         ["Pip", "#f2a7a0", "circle", "tall", true, "idle"],
         ["Nori", "#9fd4b0", "squircle", "round", false, "thinking"],
@@ -17,7 +17,7 @@ Window {
         ["Ume", "#ee9cc6", "squircle", "tall", true, "sleeping"]]
     Row {
         id: row
-        x: 24; anchors.verticalCenter: parent.verticalCenter
+        anchors.centerIn: parent
         spacing: 24
         Repeater {
             model: win.items
@@ -30,29 +30,6 @@ Window {
                     blush: modelData[4]; mood: modelData[5]; reducedMotion: true
                 }
                 Text { anchors.horizontalCenter: parent.horizontalCenter; text: modelData[5]; color: "#9a9a9a"; font.pixelSize: 13; font.family: "IBM Plex Sans" }
-            }
-        }
-    }
-    // The phone runs past the bottom edge on purpose: only its lock screen top with the push matters.
-    Rectangle {
-        id: phone
-        x: row.x + row.width + 24; y: 24; width: 192; height: 240
-        color: "#262626"; radius: 32
-        Rectangle {
-            anchors.fill: parent; anchors.margins: 8
-            color: "#313131"; radius: 24
-            Text { x: 16; y: 16; text: "15:42"; color: "#b0b0b0"; font.pixelSize: 13; font.family: "IBM Plex Sans"; font.weight: Font.DemiBold }
-            Rectangle {
-                x: 8; y: 48; width: parent.width - 16; height: push.height + 24
-                color: "#3d3d3d"; radius: 16
-                Column {
-                    id: push
-                    x: 12; y: 12; width: parent.width - 24
-                    spacing: 4
-                    Text { text: "ntfy · now"; color: "#9a9a9a"; font.pixelSize: 11; font.family: "IBM Plex Sans" }
-                    Text { text: "blinky · Miso"; color: "#ececec"; font.pixelSize: 13; font.family: "IBM Plex Sans"; font.weight: Font.DemiBold }
-                    Text { text: "Claude is done"; color: "#b0b0b0"; font.pixelSize: 13; font.family: "IBM Plex Sans" }
-                }
             }
         }
     }

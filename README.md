@@ -6,7 +6,12 @@ A small character for every Claude Code and Codex session on your Linux desktop.
 terminal its agent runs in, acts out what the agent is doing, and tells you when the agent is done or needs you:
 at the PC with a speech bubble and a chime, away from the desk with a push on your phone.
 
-![The moods of a blinky, and the phone push when an agent is done](assets/moods.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/preview-dark.svg">
+  <img src="assets/preview-light.svg" width="100%" alt="An agent runs blinky's checks in a terminal, and the blinky in its corner says they pass. Next to it, the phone gets the push that Claude is done.">
+</picture>
+
+![The moods of a blinky](assets/moods.png)
 
 > [!NOTE]
 > Blinky was built for **ghostly-qshell**, my own [Quickshell](https://quickshell.org) setup on Hyprland, which
