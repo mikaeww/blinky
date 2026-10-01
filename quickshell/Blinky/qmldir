@@ -1,0 +1,9 @@
+module Blinky
+BlinkySessions 1.0 BlinkySessions.qml
+BlinkyFace 1.0 BlinkyFace.qml
+BlinkyBoard 1.0 board/BlinkyBoard.qml
+TerminalBlinkies 1.0 TerminalBlinkies.qml
+HyprlandWindows 1.0 HyprlandWindows.qml
+internal BlinkyEyes BlinkyEyes.qml
+internal BlinkyBadge BlinkyBadge.qml
+internal BlinkyBubble BlinkyBubble.qml
